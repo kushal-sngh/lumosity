@@ -3,7 +3,7 @@ FROM centos:centos7
 MAINTAINER kushal.singh
 
 RUN yum -y --setopt=tsflags=nodocs update && \
-    yum -y --setopt=tsflags=nodocs install httpd && \
+    yum -y --setopt=tsflags=nodocs install httpd git && \
     yum clean all
 #Create directory to serve static conetent
 
