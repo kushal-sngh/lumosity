@@ -8,7 +8,7 @@ RUN yum -y --setopt=tsflags=nodocs update && \
     yum clean all
 #Create directory to serve static conetent
 
-RUN mkdir  /var/www/
+#RUN mkdir  /var/www/
 RUN mkdir  /var/www/html
 ADD git clone https://github.com/kushal-sngh/lumosity.git /
 RUN cp -r /lumosity/static-content/* /var/www/html
