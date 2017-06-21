@@ -10,12 +10,11 @@ RUN yum -y --setopt=tsflags=nodocs update && \
 
 #RUN mkdir  /var/www/
 #RUN mkdir  /var/www/html
-ADD git clone https://github.com/kushal-sngh/lumosity.git /
+RUN git clone https://github.com/kushal-sngh/lumosity.git
 RUN cp -r /lumosity/static-content/* /var/www/html
-RUN rm -rf /lumosity
-
-ADD startHttpd.sh /startHttpd.sh
+RUN cp /lumosity/docker/startHttpd.sh /
 RUN chmod +x /startHttpd.sh
+RUN rm -rf /lumosity
 
 
 EXPOSE 80
