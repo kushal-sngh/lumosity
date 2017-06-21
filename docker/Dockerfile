@@ -2,54 +2,19 @@
 FROM centos:centos7
 MAINTAINER kushal.singh
 
-# Install prepare infrastructure
-RUN yum -y update && \
- yum -y install wget && \
- yum -y install tar
+RUN yum -y --setopt=tsflags=nodocs update && \
+    yum -y --setopt=tsflags=nodocs install httpd && \
+    yum clean all
+#Create directory to serve static conetent
 
-# Prepare environment 
-ENV JAVA_HOME /opt/java
-ENV CATALINA_HOME /opt/tomcat 
-ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin:$CATALINA_HOME/scripts
+RUN mkdir -p /var/www/html
+ADD static-content/*.* /var/www/html
 
-# Install Oracle Java8
-ENV JAVA_VERSION 8u112
-ENV JAVA_BUILD 8u112-b15
-
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
- http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
- tar -xvf jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
- rm jdk*.tar.gz && \
- mv jdk* ${JAVA_HOME}
+ADD startHttpd.sh /startHttpd.sh
+RUN chmod +x /startHttpd.sh
 
 
-# Install Tomcat
-ENV TOMCAT_MAJOR 8
-ENV TOMCAT_VERSION 8.5.13
+EXPOSE 80
 
-RUN wget http://192.168.100.148:8081/repository/infrastructure/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-#ADD http://localhost:8081/repository/infrastructure/apache-${TOMCAT_VERSION}.tar.gz /tmp
-#RUN cd /tmp \ 
-tar -xvf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
- rm apache-tomcat*.tar.gz && \
- mv apache-tomcat* ${CATALINA_HOME}
-
-RUN chmod +x ${CATALINA_HOME}/bin/*sh
-
-# Create Tomcat admin user
-ADD create_admin_user.sh $CATALINA_HOME/scripts/create_admin_user.sh
-ADD tomcat.sh $CATALINA_HOME/scripts/tomcat.sh
-RUN chmod +x $CATALINA_HOME/scripts/*.sh
-
-# Create tomcat user
-RUN groupadd -r tomcat && \
- useradd -g tomcat -d ${CATALINA_HOME} -s /sbin/nologin  -c "Tomcat user" tomcat && \
- chown -R tomcat:tomcat ${CATALINA_HOME}
-ADD http://192.168.100.148:8081/repository/maven-releases/org/devops/apps/password_validation/1.0/password_validation-1.0.war ${CATALINA_HOME}/webapps
-WORKDIR /opt/tomcat
-
-EXPOSE 8080
-EXPOSE 8009
-
-USER tomcat
-CMD ["tomcat.sh"]
+#USER tomcat
+CMD ["/startHttpd.sh"]
