@@ -12,7 +12,7 @@ RUN yum -y --setopt=tsflags=nodocs update && \
 #RUN mkdir  /var/www/html
 RUN git clone https://github.com/kushal-sngh/lumosity.git
 RUN cp -r /lumosity/static-content/* /var/www/html
-RUN cp /lumosity/docker/startHttpd.sh /
+RUN cp /lumosity/docker/startHttpd.sh /usr/local/bin
 RUN chmod +x /startHttpd.sh
 RUN rm -rf /lumosity
 
