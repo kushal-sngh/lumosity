@@ -9,14 +9,14 @@ fi
 #Optional commands to.You may need them to re-run script.
  
 #Stop all containers
-docker stop $(docker ps -a -q)
+#docker stop $(docker ps -a -q)
 
 #Delete all containers
-docker rm $(docker ps -a -q)
+#docker rm $(docker ps -a -q)
 
 #Delete httpd image if exist
-docker rmi -f kushal/webserver
-docker rmi -f kushal/oauth
+#docker rmi -f kushal/webserver
+#docker rmi -f kushal/oauth
 
 # End of optional commands
 
