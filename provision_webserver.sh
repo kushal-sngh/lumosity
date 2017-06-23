@@ -33,10 +33,10 @@ WEBIPADDR=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' webserver
 echo "Web Server ${WEBIPADDR}"
 
 #Build new image
-docker build --no-cache=false -t kushal/webserver $(pwd)/oauth
+docker build --no-cache=false -t kushal/oauth $(pwd)/oauth
 
-#Start container from webserver image
-docker run -d -p 8080 --name webserver kushal/oauth
+#Start container from oauth image
+docker run -d -p 4180:4180 --name oauth kushal/oauth
 
 #Wait for container is up...
 sleep 3.0
