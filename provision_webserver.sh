@@ -25,6 +25,7 @@ docker build --no-cache=false -t kushal/webserver $(pwd)/docker
 #Start container from webserver image
 docker run -d -p 8080 --name webserver kushal/webserver
 
+#Wait for container is up...
 sleep 3.0
 
 IPADDR=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' webserver)
@@ -33,8 +34,8 @@ IPADDR=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' webserver)
 #Test
 curl http://${IPADDR}
 
-#Test URL
-echo "Type this into browser"
-echo "http://${IPADDR}"
+#Local test URL
+#echo "Type this into browser"
+#echo "http://${IPADDR}"
 
  
